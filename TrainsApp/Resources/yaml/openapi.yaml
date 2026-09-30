@@ -489,12 +489,10 @@ components:
                     description: Периодичность рейсов, например, "автобус раз в 10-15 минут".
                   begin_time:
                     type: string
-                    format: date-time
-                    description: Время начала движения по нитке.
+                    description: Время начала движения по нитке (HH:mm:ss).
                   end_time:
                     type: string
-                    format: date-time
-                    description: Время окончания движения по нитке.
+                    description: Время окончания движения по нитке (HH:mm:ss).
               duration:
                 type: integer
                 description: Длительность рейса в секундах.
@@ -512,11 +510,9 @@ components:
           $ref: '#/components/schemas/Station'
         departure:
           type: string
-          format: date-time
           description: Время отправления
         arrival:
           type: string
-          format: date-time
           description: Время прибытия
         thread:
           $ref: '#/components/schemas/Thread'
@@ -561,24 +557,6 @@ components:
         station_type:
           type: string
           description: Тип станции
-#          enum:
-#            - station
-#            - platform
-#            - stop
-#            - checkpoint
-#            - post
-#            - crossing
-#            - overtaking_point
-#            - train_station
-#            - airport
-#            - bus_station
-#            - bus_stop
-#            - unknown
-#            - port
-#            - port_point
-#            - wharf
-#            - river_port
-#            - marine_station
         station_type_name:
           type: string
           description: Название типа станции
@@ -605,13 +583,6 @@ components:
               description: Код железнодорожной станции в системе ЕСР (если применимо)
         type_choices:
           $ref: '#/components/schemas/Schedule'
-    Schedule1:
-      type: object
-      properties:
-        desktop_url:
-          type: string
-        touch_url:
-          type: string
     Schedule:
       type: object
       properties:
@@ -620,12 +591,10 @@ components:
           description: Дни, когда рейс не выполняется
         arrival:
           type: string
-          format: date-time
-          description: Время прибытия в формате ISO 8601
+          description: Время прибытия (может быть ISO 8601 или HH:mm)
         departure:
           type: string
-          format: date-time
-          description: Время отправления в формате ISO 8601
+          description: Время отправления (может быть ISO 8601 или HH:mm)
         thread:
           $ref: '#/components/schemas/Thread'
         days:
@@ -655,7 +624,7 @@ components:
           type: string
         start_time:
           type: string
-          format: time
+          description: Время начала (HH:mm:ss)
         days:
           type: string
         interval:
@@ -698,7 +667,7 @@ components:
               description: Код перевозчика в системе Sirena
             iata:
               type: string
-              description: Код перевозчика в системе IATA    
+              description: Код перевозчика в системе IATA
     TicketsInfo:
       type: object
       properties:
@@ -713,10 +682,10 @@ components:
       properties:
         arrival:
           type: string
-          format: date-time
+          description: Время прибытия (HH:mm:ss или ISO 8601)
         departure:
           type: string
-          format: date-time
+          description: Время отправления (HH:mm:ss или ISO 8601)
         stop_time:
           type: integer
           description: Продолжительность остановки в секундах
@@ -760,12 +729,10 @@ components:
               description: Частота рейсов
             begin_time:
               type: string
-              format: date-time
-              description: Время начала
+              description: Время начала (HH:mm:ss)
             end_time:
               type: string
-              format: date-time
-              description: Время окончания
+              description: Время окончания (HH:mm:ss)
     Directions:
       type: object
       properties:
@@ -807,12 +774,10 @@ components:
           description: Периодичность рейсов
         begin_time:
           type: string
-          format: date-time
-          description: Время начала рейсов
+          description: Время начала рейсов (HH:mm:ss)
         end_time:
           type: string
-          format: date-time
-          description: Время окончания рейсов
+          description: Время окончания рейсов (HH:mm:ss)
     ThreadStationsResponse:
       type: object
       properties:
@@ -867,9 +832,7 @@ components:
     CarrierResponse:
       type: object
       properties:
-        carriers:
-          type: array
-          items:
+        carrier:
             $ref: '#/components/schemas/Carrier'
     AllStationsResponse:
       type: object
