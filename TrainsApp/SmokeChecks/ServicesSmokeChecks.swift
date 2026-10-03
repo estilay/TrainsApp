@@ -38,7 +38,7 @@ func smokeCheckSearch() async {
             client: try SmokeCheckConfig.makeClient(),
             apikey: SmokeCheckConfig.apikey
         )
-        let result = try await service.getSchedualBetweenStations(
+        let result = try await service.getScheduleBetweenStations(
             from: "c213", to: "c2",
             date: nil, transportTypes: nil, limit: 5, offset: nil
         )
@@ -71,7 +71,7 @@ func smokeCheckRouteStations() async {
         let client = try SmokeCheckConfig.makeClient()
 
         let searchService = SearchService(client: client, apikey: SmokeCheckConfig.apikey)
-        let search = try await searchService.getSchedualBetweenStations(
+        let search = try await searchService.getScheduleBetweenStations(
             from: "c213", to: "c2", limit: 1, offset: nil
         )
 

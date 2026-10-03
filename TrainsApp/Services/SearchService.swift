@@ -4,7 +4,7 @@ import OpenAPIRuntime
 typealias Segments = Components.Schemas.Segments
 
 protocol SearchServiceProtocol {
-    func getSchedualBetweenStations(
+    func getScheduleBetweenStations(
         from: String,
         to: String,
         date: String?,
@@ -26,7 +26,7 @@ final class SearchService: SearchServiceProtocol {
     }
     
     // MARK: - Public Methods
-    func getSchedualBetweenStations(
+    func getScheduleBetweenStations(
         from: String,
         to: String,
         date: String? = nil,
@@ -34,7 +34,7 @@ final class SearchService: SearchServiceProtocol {
         limit: Int? = nil,
         offset: Int? = nil
     ) async throws -> Segments {
-        let response = try await client.getSchedualBetweenStations(query: .init(
+        let response = try await client.getScheduleBetweenStations(query: .init(
             apikey: apikey,
             from: from,
             to: to,
