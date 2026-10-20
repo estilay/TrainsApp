@@ -1,20 +1,21 @@
 import SwiftUI
 
 struct CityPickerView: View {
-    let cities: [CityModel]
+    @Binding var cities: [CityModel]
     var onSelect: (CityModel) -> Void
-    
+
     @State private var searchText = ""
-    
+
     private var filtered: [CityModel] {
         searchText.isEmpty ? cities : cities.filter { $0.title.localizedCaseInsensitiveContains(searchText) }
     }
-    
+
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
-                ForEach(filtered) { city in
+                ForEach(Array(filtered.enumerated()), id: \.offset) { _, city in
                     row(city.title)
+                        .contentShape(Rectangle())
                         .onTapGesture { onSelect(city) }
                 }
             }
@@ -28,11 +29,15 @@ struct CityPickerView: View {
         }
         .scrollContentBackground(.hidden)
         .background(Color.whiteDayNight.ignoresSafeArea())
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Введите запрос")
+        .searchable(
+            text: $searchText,
+            placement: .navigationBarDrawer(displayMode: .always),
+            prompt: "Введите запрос"
+        )
         .navigationTitle("Выбор города")
         .navigationBarTitleDisplayMode(.inline)
     }
-    
+
     private func row(_ title: String) -> some View {
         HStack {
             Text(title).font(.system(size: 17))
@@ -43,15 +48,12 @@ struct CityPickerView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 18)
-        .contentShape(Rectangle())
     }
 }
 
 #Preview {
-    NavigationStack {
-        CityPickerView(cities: [
-            CityModel(title: "Москва", yandexCode: nil, stations: []),
-            CityModel(title: "Санкт-Петербург", yandexCode: nil, stations: [])
-        ]) { _ in }
-    }
+    CityPickerView(cities: .constant([
+        CityModel(title: "Москва", yandexCode: nil, stations: []),
+        CityModel(title: "Санкт-Петербург", yandexCode: nil, stations: [])
+    ])) { _ in }
 }

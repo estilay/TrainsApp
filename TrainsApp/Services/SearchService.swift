@@ -10,7 +10,8 @@ protocol SearchServiceProtocol {
         date: String?,
         transportTypes: String?,
         limit: Int?,
-        offset: Int?
+        offset: Int?,
+        transfers: Bool?
     ) async throws -> Segments
 }
 
@@ -32,7 +33,8 @@ final class SearchService: SearchServiceProtocol {
         date: String? = nil,
         transportTypes: String? = nil,
         limit: Int? = nil,
-        offset: Int? = nil
+        offset: Int? = nil,
+        transfers: Bool? = nil
     ) async throws -> Segments {
         let response = try await client.getScheduleBetweenStations(query: .init(
             apikey: apikey,
@@ -41,7 +43,8 @@ final class SearchService: SearchServiceProtocol {
             date: date,
             transport_types: transportTypes,
             offset: offset,
-            limit: limit
+            limit: limit,
+            transfers: transfers
         ))
         
         return try response.ok.body.json

@@ -1,7 +1,7 @@
 import OpenAPIURLSession
 
 enum APIConfig {
-    static let apiKey = "APIKEY"
+    static let apiKey = ""
     
     static let client: Client = {
         try! Client(
@@ -11,6 +11,11 @@ enum APIConfig {
     }()
     
     static let allStationsService: AllStationsServiceProtocol = AllStationsService(
+        client: client,
+        apikey: apiKey
+    )
+    
+    static let searchService: SearchServiceProtocol = SearchService(
         client: client,
         apikey: apiKey
     )
