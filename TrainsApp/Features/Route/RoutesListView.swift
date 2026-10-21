@@ -14,7 +14,8 @@ struct RoutesListView: View {
     @State private var isEveningSelected = false
     @State private var isNightSelected = false
     @State private var showTransfers = false
-
+    @State private var error: AppError?
+    
     private var anyTimeSelected: Bool {
         isMorningSelected || isDaySelected || isEveningSelected || isNightSelected
     }
@@ -42,27 +43,31 @@ struct RoutesListView: View {
     var body: some View {
         ZStack {
             Color.whiteDayNight.ignoresSafeArea()
-
-            VStack(spacing: 16) {
-                Text("\(from) → \(to)")
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundStyle(Color.blackDayNight)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 16)
-                    .padding(.top, 16)
-
-                ScrollView {
-                    LazyVStack(spacing: 8) {
-                        ForEach(routes) { route in
-                            RouteCardView(route: route)
-                        }
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 84)
+            if let error {
+                ErrorStateView(error: error) {
+                    Task { await loadRoutes(force: true) }
                 }
-                .scrollIndicators(.hidden)
+            } else {
+                VStack(spacing: 16) {
+                    Text("\(from) → \(to)")
+                        .font(.system(size: 24, weight: .bold))
+                        .foregroundStyle(Color.blackDayNight)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, 16)
+                        .padding(.top, 16)
+                    
+                    ScrollView {
+                        LazyVStack(spacing: 8) {
+                            ForEach(routes) { route in
+                                RouteCardView(route: route)
+                            }
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 84)
+                    }
+                    .scrollIndicators(.hidden)
+                }
             }
-
             VStack {
                 Spacer()
                 NavigationLink {
@@ -89,10 +94,11 @@ struct RoutesListView: View {
         .task { await loadRoutes() }
     }
 
-    private func loadRoutes() async {
-        guard allRoutes.isEmpty else { return }
+    private func loadRoutes(force: Bool = false) async {
+        guard force || allRoutes.isEmpty else { return }
         isLoading = true
         defer { isLoading = false }
+        error = nil
 
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
@@ -112,7 +118,9 @@ struct RoutesListView: View {
                 )
                 all.append(contentsOf: segments.toDisplayModels(on: day))
             } catch {
-                print("error for \(day):", error)
+                self.error = AppError.from(error)
+                print("error:", error)
+                return
             }
         }
 

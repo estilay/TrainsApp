@@ -1,7 +1,7 @@
 import OpenAPIURLSession
 
 enum APIConfig {
-    static let apiKey = ""
+    static let apiKey = AppConfig.secretAPIKey
     
     static let client: Client = {
         try! Client(

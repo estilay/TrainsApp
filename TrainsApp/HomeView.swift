@@ -20,6 +20,7 @@ struct HomeView: View {
     
     @State private var path = NavigationPath()
     @State private var cities: [CityModel] = []
+    @State private var error: AppError?
     
     enum PickField: Hashable { case from, to }
     
@@ -31,27 +32,32 @@ struct HomeView: View {
         NavigationStack(path: $path) {
             ZStack {
                 Color.whiteDayNight.ignoresSafeArea()
-                
-                VStack(spacing: 16) {
-                    DirectionPickerView(
-                        from: $from,
-                        to: $to,
-                        onSelectFrom: { path.append(PickField.from) },
-                        onSelectTo:   { path.append(PickField.to) }
-                    )
-                    
-                    if isReadyToSearch {
-                        SearchButtonView {
-                            path.append(RoutesListRoute(
-                                from: from,
-                                to: to,
-                                fromCode: fromCode,
-                                toCode: toCode
-                            ))
+                if let error {
+                    ErrorStateView(error: error) {
+                        Task { await loadCities(force: true) }
+                    }
+                } else {
+                    VStack(spacing: 16) {
+                        DirectionPickerView(
+                            from: $from,
+                            to: $to,
+                            onSelectFrom: { path.append(PickField.from) },
+                            onSelectTo:   { path.append(PickField.to) }
+                        )
+                        
+                        if isReadyToSearch {
+                            SearchButtonView {
+                                path.append(RoutesListRoute(
+                                    from: from,
+                                    to: to,
+                                    fromCode: fromCode,
+                                    toCode: toCode
+                                ))
+                            }
                         }
                     }
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
             }
             .navigationDestination(for: PickField.self) { field in
                 CityPickerView(cities: $cities) { city in
@@ -96,12 +102,14 @@ struct HomeView: View {
         .task { await loadCities() }
     }
     
-    private func loadCities() async {
-        guard cities.isEmpty else { return }
+    private func loadCities(force: Bool = false) async {
+        guard force || cities.isEmpty else { return }
         do {
             let response = try await APIConfig.allStationsService.getAllStations()
             cities = response.toCities()
+            error = nil
         } catch {
+            self.error = AppError.from(error)
             print("error:", error)
         }
     }
