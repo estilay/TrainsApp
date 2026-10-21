@@ -39,7 +39,7 @@ struct StationPickerView: View {
             placement: .navigationBarDrawer(displayMode: .always),
             prompt: "Введите запрос"
         )
-        .navigationTitle(cityTitle)
+        .navigationTitle("Выбор станции")
         .navigationBarTitleDisplayMode(.inline)
     }
 

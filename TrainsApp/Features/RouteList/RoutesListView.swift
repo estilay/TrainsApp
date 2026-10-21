@@ -20,6 +20,10 @@ struct RoutesListView: View {
         isMorningSelected || isDaySelected || isEveningSelected || isNightSelected
     }
 
+    private var hasActiveFilters: Bool {
+        anyTimeSelected || showTransfers
+    }
+
     private var routes: [RouteDisplayModel] {
         allRoutes.filter { route in
             if anyTimeSelected {
@@ -43,7 +47,10 @@ struct RoutesListView: View {
     var body: some View {
         ZStack {
             Color.whiteDayNight.ignoresSafeArea()
-            if let error {
+            
+            if isLoading {
+                SpinnerProgressView()
+            } else if let error {
                 ErrorStateView(error: error) {
                     Task { await loadRoutes(force: true) }
                 }
@@ -57,17 +64,24 @@ struct RoutesListView: View {
                         .padding(.top, 16)
                     
                     ScrollView {
-                        LazyVStack(spacing: 8) {
-                            ForEach(routes) { route in
-                                RouteCardView(route: route)
+                        if routes.isEmpty {
+                            Text("Вариантов нет")
+                                .font(.system(size: 24, weight: .bold))
+                                .foregroundStyle(.blackDayNight)
+                        } else {
+                            LazyVStack(spacing: 8) {
+                                ForEach(routes) { route in
+                                    RouteCardView(route: route)
+                                }
                             }
+                            .padding(.horizontal, 16)
+                            .padding(.bottom, 84)
                         }
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 84)
                     }
                     .scrollIndicators(.hidden)
                 }
             }
+            
             VStack {
                 Spacer()
                 NavigationLink {
@@ -79,15 +93,7 @@ struct RoutesListView: View {
                         showTransfers: $showTransfers
                     )
                 } label: {
-                    Text("Уточнить время")
-                        .font(.system(size: 17, weight: .bold))
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 60)
-                        .background(Color.blueUniversal)
-                        .foregroundStyle(.whiteUniversal)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 16)
+                    FilterButtonView(isActive: hasActiveFilters)
                 }
             }
         }
@@ -110,7 +116,7 @@ struct RoutesListView: View {
                 let segments = try await APIConfig.searchService.getScheduleBetweenStations(
                     from: fromCode,
                     to: toCode,
-                    date: Self.apiDateFormatter.string(from: day),
+                    date: DateFormatter.apiDate.string(from: day),
                     transportTypes: nil,
                     limit: 100,
                     offset: nil,
@@ -126,13 +132,6 @@ struct RoutesListView: View {
 
         allRoutes = all
     }
-
-    private static let apiDateFormatter: DateFormatter = {
-        let df = DateFormatter()
-        df.locale = Locale(identifier: "en_US_POSIX")
-        df.dateFormat = "yyyy-MM-dd"
-        return df
-    }()
 }
 
 #Preview {
