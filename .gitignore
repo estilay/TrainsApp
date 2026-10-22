@@ -5,7 +5,7 @@
 xcuserdata/
 
 ## Secret config file
-Secrets.xcconfig
+
 !Secrets.xcconfig.example
 
 ## Environment
