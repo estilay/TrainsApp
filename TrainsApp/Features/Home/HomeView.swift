@@ -12,6 +12,13 @@ struct RoutesListRoute: Hashable {
     let toCode: String
 }
 
+struct CarrierInfoRoute: Hashable {
+    let carrierCode: String
+    let carrierSystem: String?
+    let carrierName: String
+    let carrierLogoURL: URL?
+}
+
 struct HomeView: View {
     @State private var from = ""
     @State private var to = ""
@@ -100,6 +107,10 @@ struct HomeView: View {
                     toCode: route.toCode
                 )
                 .toolbar(.hidden, for: .tabBar)
+            }
+            .navigationDestination(for: CarrierInfoRoute.self) { route in
+                CarrierInfoView(route: route)
+                    .toolbar(.hidden, for: .tabBar)
             }
         }
         .task { await loadCities() }

@@ -7,12 +7,17 @@ extension Segments {
         df.dateFormat = "d MMMM"
         let dateString = df.string(from: date)
 
-        return (segments ?? []).compactMap { segment in
+        return (segments ?? []).compactMap { segment -> RouteDisplayModel? in
             guard let departure = segment.departure else { return nil }
+
+            let carrier = segment.thread?.carrier
+
             return RouteDisplayModel(
                 id: UUID().uuidString,
-                carrierName: segment.thread?.carrier?.title ?? "Перевозчик",
-                carrierLogoURL: logoURL(from: segment.thread?.carrier?.logo),
+                carrierName: carrier?.title ?? "Перевозчик",
+                carrierLogoURL: logoURL(from: carrier?.logo),
+                carrierCode: carrier?.code.map(String.init),
+                carrierSystem: nil,
                 transferInfo: nil,
                 departureTime: shortTime(departure),
                 arrivalTime: shortTime(segment.arrival),

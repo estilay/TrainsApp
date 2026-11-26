@@ -66,6 +66,8 @@ struct RouteCardView: View {
         id: "1",
         carrierName: "РЖД",
         carrierLogoURL: nil,
+        carrierCode: "TK",
+        carrierSystem: nil,
         transferInfo: "Пересадка в Костроме",
         departureTime: "22:30",
         arrivalTime: "08:15",

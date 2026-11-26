@@ -73,7 +73,21 @@ struct RoutesListView: View {
                         ScrollView {
                             LazyVStack(spacing: 8) {
                                 ForEach(routes) { route in
-                                    RouteCardView(route: route)
+                                    let canOpenCarrier = !(route.carrierCode?.isEmpty ?? true)
+
+                                    if canOpenCarrier {
+                                        NavigationLink(value: CarrierInfoRoute(
+                                            carrierCode: route.carrierCode ?? "",
+                                            carrierSystem: route.carrierSystem,
+                                            carrierName: route.carrierName,
+                                            carrierLogoURL: route.carrierLogoURL
+                                        )) {
+                                            RouteCardView(route: route)
+                                        }
+                                        .buttonStyle(.plain)
+                                    } else {
+                                        RouteCardView(route: route)
+                                    }
                                 }
                             }
                             .padding(.horizontal, 16)

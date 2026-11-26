@@ -9,4 +9,6 @@ struct RouteDisplayModel: Identifiable, Hashable {
     let arrivalTime: String
     let duration: String
     let dateText: String
+    let carrierCode: String?
+    let carrierSystem: String?
 }
