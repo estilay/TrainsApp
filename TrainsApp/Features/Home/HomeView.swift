@@ -22,7 +22,10 @@ struct HomeView: View {
     @State private var cities: [CityModel] = []
     @State private var error: AppError?
     
-    enum PickField: Hashable { case from, to }
+    enum PickField: Hashable {
+        case from
+        case to
+    }
     
     private var isReadyToSearch: Bool {
         !fromCode.isEmpty && !toCode.isEmpty && fromCode != toCode
@@ -42,7 +45,7 @@ struct HomeView: View {
                             from: $from,
                             to: $to,
                             onSelectFrom: { path.append(PickField.from) },
-                            onSelectTo:   { path.append(PickField.to) }
+                            onSelectTo: { path.append(PickField.to) }
                         )
                         
                         if isReadyToSearch {

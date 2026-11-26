@@ -1,7 +1,5 @@
 import SwiftUI
 
-import SwiftUI
-
 struct RouteCardView: View {
     let route: RouteDisplayModel
 

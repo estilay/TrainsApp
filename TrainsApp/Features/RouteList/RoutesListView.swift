@@ -63,12 +63,14 @@ struct RoutesListView: View {
                         .padding(.horizontal, 16)
                         .padding(.top, 16)
                     
-                    ScrollView {
-                        if routes.isEmpty {
-                            Text("Вариантов нет")
-                                .font(.system(size: 24, weight: .bold))
-                                .foregroundStyle(.blackDayNight)
-                        } else {
+                    if routes.isEmpty {
+                        Spacer()
+                        Text("Вариантов нет")
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundStyle(.blackDayNight)
+                        Spacer()
+                    } else {
+                        ScrollView {
                             LazyVStack(spacing: 8) {
                                 ForEach(routes) { route in
                                     RouteCardView(route: route)
@@ -77,8 +79,8 @@ struct RoutesListView: View {
                             .padding(.horizontal, 16)
                             .padding(.bottom, 84)
                         }
+                        .scrollIndicators(.hidden)
                     }
-                    .scrollIndicators(.hidden)
                 }
             }
             

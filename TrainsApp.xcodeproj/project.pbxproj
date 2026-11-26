@@ -9,10 +9,12 @@
 /* Begin PBXBuildFile section */
 		B81AA23A3068A793007454A0 /* OpenAPIRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = B81AA2393068A793007454A0 /* OpenAPIRuntime */; };
 		B81AA23D3068A7E3007454A0 /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = B81AA23C3068A7E3007454A0 /* OpenAPIURLSession */; };
+		B8E552A5309CD15300FB98F4 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B8E552A3309CD14000FB98F4 /* .swiftlint.yml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B81AA2273068A521007454A0 /* TrainsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrainsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8E552A3309CD14000FB98F4 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -52,6 +54,7 @@
 		B81AA21E3068A521007454A0 = {
 			isa = PBXGroup;
 			children = (
+				B8E552A3309CD14000FB98F4 /* .swiftlint.yml */,
 				B81AA2293068A521007454A0 /* TrainsApp */,
 				B81AA253306B33CD007454A0 /* Frameworks */,
 				B81AA2283068A521007454A0 /* Products */,
@@ -81,6 +84,7 @@
 			buildConfigurationList = B81AA2323068A523007454A0 /* Build configuration list for PBXNativeTarget "TrainsApp" */;
 			buildPhases = (
 				B81AA2233068A521007454A0 /* Sources */,
+				B8E5529D309CCF9500FB98F4 /* ShellScript */,
 				B81AA2243068A521007454A0 /* Frameworks */,
 				B81AA2253068A521007454A0 /* Resources */,
 			);
@@ -145,10 +149,31 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8E552A5309CD15300FB98F4 /* .swiftlint.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B8E5529D309CCF9500FB98F4 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B81AA2233068A521007454A0 /* Sources */ = {
@@ -208,7 +233,7 @@
 				DEVELOPMENT_TEAM = 5PRJ2M52BU;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -274,7 +299,7 @@
 				DEVELOPMENT_TEAM = 5PRJ2M52BU;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
