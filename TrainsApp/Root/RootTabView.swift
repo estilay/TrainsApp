@@ -7,7 +7,10 @@ struct RootTabView: View {
             .tabItem {
                 Label("", image: .schedule)
             }
-            SettingsView()
+            
+            NavigationStack {
+                SettingsView()
+            }
             .tabItem {
                 Label("", image: .settings)
             }
